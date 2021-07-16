@@ -1,5 +1,5 @@
 export default class CRUDApi {
-    static crudURL = 'http://192.168.12.31:8088/crud';
+    static crudURL = 'http://ims.homelinux.com:18088/crud';
 
     static crudPost = async (entity, data) => {
         try {

@@ -8,6 +8,8 @@ import Home from './components/home';
 import Users from './components/users';
 import InventoryTransfer from './components/inventorytransfer';
 import Receiving from './components/receiving';
+import Shipping from "./components/shipping";
+import Physical from "./components/physical";
 
 function App() {
   return (
@@ -27,6 +29,12 @@ function App() {
             </Route>
             <Route path='/receiving'>
               <Receiving />
+            </Route>
+            <Route path='/shipping'>
+              <Shipping />
+            </Route>
+            <Route path='/physical'>
+              <Physical />
             </Route>
           </Switch>
         </div>

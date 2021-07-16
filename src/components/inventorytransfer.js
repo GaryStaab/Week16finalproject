@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Col, Button } from 'react-bootstrap';
+import { Form, Col, Row, Button } from 'react-bootstrap';
 import { connect } from "react-redux";
 import {
   inventoryTransferInit,
@@ -56,7 +56,7 @@ class InventoryTransfer extends React.Component {
   }
 
   updateTransaction = async (id, data) => {
-    await console.log ("PUT");
+    await console.log("PUT");
     await console.log(id);
     await console.log(data);
     await CRUDApi.crudPut("invTrans", id, data);
@@ -80,29 +80,27 @@ class InventoryTransfer extends React.Component {
         <h3>Inventory Transfer</h3>
         <Form>
           <Form.Group>
-            <Form.Row>
-              <Col>
-                <Form.Label column>From Location:</Form.Label>
-                <Form.Control type="text" value={screenData.fromLocation} placeholder="From Location" id="fromLocation" onChange={saveScreen} />
-              </Col>
-              <Col>
-                <Form.Label column>Item:</Form.Label>
-                <Form.Control type="text" value={screenData.item} placeholder="Item" id="item" onChange={saveScreen} />
-              </Col>
-              <Col>
-                <Form.Label column>To Location:</Form.Label>
-                <Form.Control type="text" value={screenData.toLocation} placeholder="To Location" id="toLocation" onChange={saveScreen} />
-              </Col>
-              <Col>
-                <Form.Label column>Quantity:</Form.Label>
-                <Form.Control type="numeric" value={screenData.quantity} placeholder="Qty" id="quantity" onChange={saveScreen} />
-              </Col>
-            </Form.Row>
+            <Row>
+              <Col xs="4"><Form.Label size="sm" >From Loc:</Form.Label></Col>
+              <Col xs="8"><Form.Control type="text" value={screenData.fromLocation} placeholder="From Location" id="fromLocation" onChange={saveScreen} size="sm" /></Col>
+            </Row>
+            <Row>
+              <Col xs="4"><Form.Label size="sm" >Item:</Form.Label></Col>
+              <Col xs="8"><Form.Control type="text" value={screenData.item} placeholder="Item" id="item" onChange={saveScreen} size="sm" /></Col>
+            </Row>
+            <Row>
+              <Col xs="4"><Form.Label size="sm" >To Loc:</Form.Label></Col>
+              <Col xs="8"><Form.Control type="text" value={screenData.toLocation} placeholder="To Location" id="toLocation" onChange={saveScreen} size="sm" /></Col>
+            </Row>
+            <Row>
+              <Col xs="4"><Form.Label size="sm" >Quantity:</Form.Label></Col>
+              <Col xs="8"><Form.Control type="numeric" value={screenData.quantity} placeholder="Qty" id="quantity" onChange={saveScreen} size="sm" /></Col>
+            </Row>
           </Form.Group>
           <p></p>
           <Form.Group>
             <Col md="5">
-              <Button className="btn-primary" onClick={this.handleClick}>Post</Button>
+              <Button className="btn-primary" onClick={this.handleClick}>Transfer</Button>
             </Col>
           </Form.Group>
           <p></p>

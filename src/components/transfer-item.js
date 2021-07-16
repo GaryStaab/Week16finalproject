@@ -19,14 +19,20 @@ export default class TransferItem extends React.Component {
 
     render() {
         return (
-            <tr>
-                <td width={'20%'}>{this.props.Data.fromLocation}</td>
-                <td width={'20%'}>{this.props.Data.item}</td>
-                <td width={'20%'}>{this.props.Data.toLocation}</td>
-                <td width={'20%'}>{this.props.Data.quantity}</td>
-                <td width={'10%'}><TransferUpdate id={this.props.id} data={this.props.Data} updateTransaction={this.props.updateTransaction}/></td>
-                <td width={'10%'}><Button size="sm" onClick={this.handleClickDelete}>Delete</Button></td>
-            </tr>
+            <>
+                <tr>
+                    <td width={'30%'}>{this.props.Data.fromLocation}</td>
+                    <td width={'20%'}>{this.props.Data.item}</td>
+                    <td width={'30%'}>{this.props.Data.toLocation}</td>
+                    <td width={'20%'}>{this.props.Data.quantity}</td>
+                </tr>
+                <tr>
+                    <td width={'30%'}></td>
+                    <td width={'30%'}></td>
+                    <td width={'30%'}><TransferUpdate key={this.props.id} id={this.props.id} data={this.props.Data} updateTransaction={this.props.updateTransaction} /></td>
+                    <td width={'20%'}><Button size="sm" onClick={this.handleClickDelete}>Delete</Button></td>
+                </tr>
+            </>
         );
     }
 }

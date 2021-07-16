@@ -11,15 +11,13 @@ export default class TransferList extends React.Component {
         return (
             <div className="container">
                 {/* <table className='table striped bordered hover size="sm" table-dark'> */}
-                <Table responsive="sm" table striped bordered hover size="sm" variant="dark">
+                <Table responsive="sm" striped bordered hover size="sm" variant="dark">
                     <tbody>
                     <tr>
                         <td>From</td>
                         <td>Item</td>
                         <td>To</td>
                         <td>Qty</td>
-                        <td></td>
-                        <td></td>
                     </tr>
                         {this.props.transferList.map((transferItem, i) => {
                             return(
