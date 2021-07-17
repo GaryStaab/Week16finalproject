@@ -57,7 +57,8 @@ class InventoryTransfer extends React.Component {
   deleteTransaction = async (id) => {
     await CRUDApi.crudDelete("invTrans", id);
     let resp = await CRUDApi.crudGet("invTrans");
-    await this.props.dispatch(inventoryTransferInit({ history: resp }));
+    let itemList = await CRUDApi.crudGet("item");
+    await this.props.dispatch(inventoryTransferInit({ history: resp, items: itemList }));
   }
 
   updateTransaction = async (id, data) => {
@@ -66,7 +67,8 @@ class InventoryTransfer extends React.Component {
     await console.log(data);
     await CRUDApi.crudPut("invTrans", id, data);
     let resp = await CRUDApi.crudGet("invTrans");
-    await this.props.dispatch(inventoryTransferInit({ history: resp }));
+    let itemList = await CRUDApi.crudGet("item");
+    await this.props.dispatch(inventoryTransferInit({ history: resp, items: itemList }));
   }
 
   componentDidMount() {
