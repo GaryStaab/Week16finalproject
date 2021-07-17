@@ -1,8 +1,7 @@
 import {
-    INVTRN_SAVE_SCREEN,
-    INVTRN_SUBMIT_SCREEN,
-    INVTRN_INIT,
-    INVTRN_LOOKUP_ITEM
+    RCT_SAVE_SCREEN,
+    RCT_SUBMIT_SCREEN,
+    RCT_INIT
 } from "../actions";
 import CRUDApi from "../../rest/crudApi";
 // const initialState = async () => {
@@ -17,11 +16,10 @@ import CRUDApi from "../../rest/crudApi";
 
 const initialState = {
     item: "",
-    fromLocation: "",
+    poNum: "",
     toLocation: "",
     quantity: 0,
-    history: [],
-    items: []
+    history: []
 };
 
 
@@ -32,22 +30,19 @@ const postReget = async (state) => {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case INVTRN_INIT:
-            return { ...initialState, history: action.payload.history, items: action.payload.items };
-        case INVTRN_SAVE_SCREEN:
+        case RCT_INIT:
+            return { ...initialState, history: action.payload.history };
+        case RCT_SAVE_SCREEN:
+            console.log(action.payload.e.nativeEvent.target.value);
             let screenValue = action.payload.e.nativeEvent.target.value;
             let screenInt = Number.parseInt(screenValue);
             if (!Number.isNaN(screenInt)) {
                 screenValue = screenInt;
             }
             return { ...state, [action.payload.e.nativeEvent.target.id]: screenValue };
-        case INVTRN_LOOKUP_ITEM:
-            let screenLookup = action.payload.e;
-            console.log(screenLookup);
-            return { ...state, item: screenLookup };
-        case INVTRN_SUBMIT_SCREEN:
+        case RCT_SUBMIT_SCREEN:
             postReget(state);
-            return { ...initialState };
+            return {...initialState};
         default:
             return state;
     }

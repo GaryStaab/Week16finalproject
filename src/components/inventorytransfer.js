@@ -1,10 +1,11 @@
 import React from 'react';
-import { Form, Col, Row, Button } from 'react-bootstrap';
+import { Form, Col, Row, Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import { connect } from "react-redux";
 import {
   inventoryTransferInit,
   inventoryTransferSave,
-  inventoryTransferSubmit
+  inventoryTransferSubmit,
+  inventoryTransferLookupItem
 } from "../redux/actions";
 import CRUDApi from "../rest/crudApi";
 import TransferList from "./transfer-list";
@@ -36,7 +37,9 @@ class InventoryTransfer extends React.Component {
 
   getHistory = async () => {
     let resp = await CRUDApi.crudGet("invTrans");
-    await this.props.dispatch(inventoryTransferInit({ history: resp }));
+    let itemList = await CRUDApi.crudGet("item");
+    await console.log(itemList);
+    await this.props.dispatch(inventoryTransferInit({ history: resp, items: itemList }));
   }
 
   postTransaction = async () => {
@@ -44,9 +47,11 @@ class InventoryTransfer extends React.Component {
     const screenPut = { ...this.props.screenData };
     console.log(screenPut);
     delete screenPut['history'];
+    delete screenPut['items'];
     await CRUDApi.crudPost("invTrans", screenPut);
     let resp = await CRUDApi.crudGet("invTrans");
-    await this.props.dispatch(inventoryTransferInit({ history: resp }));
+    let itemList = await CRUDApi.crudGet("item");
+    await this.props.dispatch(inventoryTransferInit({ history: resp, items: itemList }));
   }
 
   deleteTransaction = async (id) => {
@@ -74,29 +79,43 @@ class InventoryTransfer extends React.Component {
   }
 
   render() {
-    const { screenData, saveScreen, submitScreen } = this.props;
+    const { screenData, saveScreen, submitScreen, lookupItem } = this.props;
+    console.log(screenData.items);
+    console.log(screenData.history);
     return (
       <>
         <h3>Inventory Transfer</h3>
         <Form>
           <Form.Group>
             <Row>
-              <Col xs="4"><Form.Label size="sm" >From Loc:</Form.Label></Col>
-              <Col xs="8"><Form.Control type="text" value={screenData.fromLocation} placeholder="From Location" id="fromLocation" onChange={saveScreen} size="sm" /></Col>
+              <Col xs="3"><Form.Label size="sm" >From Loc:</Form.Label></Col>
+              <Col xs="9"><Form.Control type="text" value={screenData.fromLocation} placeholder="From Location" id="fromLocation" onChange={saveScreen} size="sm" /></Col>
             </Row>
             <Row>
-              <Col xs="4"><Form.Label size="sm" >Item:</Form.Label></Col>
-              <Col xs="8"><Form.Control type="text" value={screenData.item} placeholder="Item" id="item" onChange={saveScreen} size="sm" /></Col>
             </Row>
             <Row>
-              <Col xs="4"><Form.Label size="sm" >To Loc:</Form.Label></Col>
-              <Col xs="8"><Form.Control type="text" value={screenData.toLocation} placeholder="To Location" id="toLocation" onChange={saveScreen} size="sm" /></Col>
+              <Col xs="3"><Form.Label size="sm" >Item:</Form.Label></Col>
+              <Col xs="6"><Form.Control type="text" value={screenData.item} placeholder="Item" id="item" onChange={saveScreen} size="sm" /></Col>
+              <Col xs="3">
+                <DropdownButton alignRight title="Lookup" id="dropdown-menu-align-right" onSelect={lookupItem} >
+                  {screenData.items.map((item, i) => {
+                    return (
+                      <Dropdown.Item key={i} eventKey={item.Data.item}>{item.Data.item}</Dropdown.Item>
+                    )
+                  })}
+                </DropdownButton>
+              </Col>
             </Row>
             <Row>
-              <Col xs="4"><Form.Label size="sm" >Quantity:</Form.Label></Col>
-              <Col xs="8"><Form.Control type="numeric" value={screenData.quantity} placeholder="Qty" id="quantity" onChange={saveScreen} size="sm" /></Col>
+              <Col xs="3"><Form.Label size="sm" >To Loc:</Form.Label></Col>
+              <Col xs="9"><Form.Control type="text" value={screenData.toLocation} placeholder="To Location" id="toLocation" onChange={saveScreen} size="sm" /></Col>
+            </Row>
+            <Row>
+              <Col xs="3"><Form.Label size="sm" >Quantity:</Form.Label></Col>
+              <Col xs="9"><Form.Control type="numeric" value={screenData.quantity} placeholder="Qty" id="quantity" onChange={saveScreen} size="sm" /></Col>
             </Row>
           </Form.Group>
+          <p></p>
           <p></p>
           <Form.Group>
             <Col md="5">
@@ -116,6 +135,7 @@ class InventoryTransfer extends React.Component {
 const mapDispatchToProps = dispatch => {
   return {
     saveScreen: (event) => dispatch(inventoryTransferSave({ e: event })),
+    lookupItem: (event) => dispatch(inventoryTransferLookupItem({ e: event })),
     submitScreen: (event) => dispatch(inventoryTransferSubmit({ e: event })),
     initHistory: (history) => dispatch(inventoryTransferInit({ history: history })),
     dispatch
